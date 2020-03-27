@@ -73,7 +73,7 @@ export default function Detail({ route, navigation }) {
       } else {
         Alert.alert(
           'Critica',
-          'Esta entrega ja foi efetuada anteriormente! Operação não permitida.',
+          'Esta encomenda já foi entregue! Operação não permitida.',
           [
             {
               text: 'OK',
@@ -100,19 +100,32 @@ export default function Detail({ route, navigation }) {
     navigation.navigate('Problems', { orderId: order.id });
   };
   const handleAddProblem = () => {
-    if (order && !order.canceled_at) {
-      navigation.navigate('AddProblem', { orderId: order.id });
-    } else {
-      Alert.alert(
-        'Critica',
-        'Esta entrega esta cancelada! Operação não permitida.',
-        [
-          {
-            text: 'OK',
-            onPress: async () => {},
-          },
-        ]
-      );
+    if (order) {
+      if (order.canceled_at) {
+        Alert.alert(
+          'Critica',
+          'Esta entrega esta cancelada! Operação não permitida.',
+          [
+            {
+              text: 'OK',
+              onPress: async () => {},
+            },
+          ]
+        );
+      } else if (endDate !== '-- / -- / --') {
+        Alert.alert(
+          'Critica',
+          'Esta encomenda já foi entregue! Operação não permitida.',
+          [
+            {
+              text: 'OK',
+              onPress: async () => {},
+            },
+          ]
+        );
+      } else {
+        navigation.navigate('AddProblem', { orderId: order.id });
+      }
     }
   };
 
