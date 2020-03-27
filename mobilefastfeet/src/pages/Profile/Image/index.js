@@ -36,7 +36,6 @@ export default function Image({ route, navigation }) {
           Platform.OS === 'android' ? picture : picture.replace('file://', ''),
         name: picture.split('/')[9],
       });
-      console.tron.log('alo 2');
       const response = await api.post('files', data);
       const { id } = response.data;
       const update = {
@@ -46,8 +45,6 @@ export default function Image({ route, navigation }) {
         avatar_id: id,
       };
       dispatch(updateProfileRequest(update));
-      // if (dataProfile.data) {
-      // console.tron.log(dataProfile.data);
       Alert.alert('Sucesso', 'Perfil atualizado com sucesso');
       navigation.pop();
       // }
