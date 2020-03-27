@@ -13,7 +13,6 @@ export function* updateProfile({ payload }) {
       email,
       avatar_id,
     };
-    console.tron.log(profile);
     const response = yield call(api.put, `deliveryman/${id}`, profile);
 
     yield put(updateProfileSuccess(response.data));

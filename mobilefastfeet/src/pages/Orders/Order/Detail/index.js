@@ -53,7 +53,7 @@ export default function Detail({ route, navigation }) {
                     setStartDate(
                       format(parseISO(response.data.start_date), 'dd/MM/yy')
                     );
-                    Alert.alert('Sucesso', 'Retirada finalizada com sucesso');
+                    Alert.alert('Sucesso', 'Retirada efetuada com sucesso');
                     // //
                     //                     navigation.goBack();
                   }

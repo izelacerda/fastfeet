@@ -32,9 +32,11 @@ export default function Image({ route, navigation }) {
 
       data.append('file', {
         type: 'image/jpeg',
-        uri: picture.replace('file://', ''),
+        uri:
+          Platform.OS === 'android' ? picture : picture.replace('file://', ''),
         name: picture.split('/')[9],
       });
+      console.tron.log('alo 2');
       const response = await api.post('files', data);
       const { id } = response.data;
       const update = {

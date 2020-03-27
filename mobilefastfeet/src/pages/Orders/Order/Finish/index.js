@@ -30,7 +30,8 @@ export default function Finish({ route, navigation }) {
 
       data.append('file', {
         type: 'image/jpeg',
-        uri: picture.replace('file://', ''),
+        uri:
+          Platform.OS === 'android' ? picture : picture.replace('file://', ''),
         name: picture.split('/')[9],
       });
       const response = await api.post(`/order/${order.id}/alterfinish`, data);
