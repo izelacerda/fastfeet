@@ -36,7 +36,6 @@ target 'mobilefastfeet' do
 
 
 
-  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
   target 'mobilefastfeetTests' do
     inherit! :search_paths

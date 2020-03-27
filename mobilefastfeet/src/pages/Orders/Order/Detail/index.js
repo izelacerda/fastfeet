@@ -68,8 +68,19 @@ export default function Detail({ route, navigation }) {
             },
           ]
         );
-      } else {
+      } else if (!order.end_date) {
         navigation.navigate('Finish', { order });
+      } else {
+        Alert.alert(
+          'Critica',
+          'Esta entrega ja foi efetuada anteriormente! Operação não permitida.',
+          [
+            {
+              text: 'OK',
+              onPress: async () => {},
+            },
+          ]
+        );
       }
     } else {
       Alert.alert(
