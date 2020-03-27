@@ -27,7 +27,8 @@ export default function Order({ navigation }) {
         options={{
           title: 'Detalhes da encomenda',
           headerStyle: {
-            backgroundColor: '#7d40e7',
+            backgroundColor: '#7d3fe7',
+            elevation: 0,
             shadowColor: 'transparent',
             height: 95,
           },
@@ -49,7 +50,8 @@ export default function Order({ navigation }) {
         options={{
           title: 'Informar problema',
           headerStyle: {
-            backgroundColor: '#7d40e7',
+            backgroundColor: '#7d3fe7',
+            elevation: 0,
             shadowColor: 'transparent',
             height: 95,
           },
@@ -71,7 +73,8 @@ export default function Order({ navigation }) {
         options={{
           title: 'Visualizar problemas',
           headerStyle: {
-            backgroundColor: '#7d40e7',
+            backgroundColor: '#7d3fe7',
+            elevation: 0,
             shadowColor: 'transparent',
             height: 95,
           },
@@ -93,7 +96,8 @@ export default function Order({ navigation }) {
         options={{
           title: 'Confirmar entrega',
           headerStyle: {
-            backgroundColor: '#7d40e7',
+            backgroundColor: '#7d3fe7',
+            elevation: 0,
             shadowColor: 'transparent',
             height: 95,
           },

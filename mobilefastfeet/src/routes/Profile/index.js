@@ -24,7 +24,8 @@ export default function Profile({ navigation }) {
         options={{
           title: 'Foto Perfil',
           headerStyle: {
-            backgroundColor: '#7d40e7',
+            backgroundColor: '#7d3fe7',
+            elevation: 0,
             shadowColor: 'transparent',
             height: 95,
           },
