@@ -8,16 +8,16 @@ class CadastroOrderMail {
   }
 
   async handle({ data }) {
-    const { delivery } = data;
+    const { order } = data;
     await Mail.sendMail({
-      to: `${delivery.deliveryman.name} <${delivery.deliveryman.email}>`,
+      to: `${order.deliveryman.name} <${order.deliveryman.email}>`,
       subject: 'Encomenda Incluída',
       template: 'included',
       context: {
-        deliveryman: delivery.deliveryman.name,
-        product: delivery.product,
+        deliveryman: order.deliveryman.name,
+        product: order.product,
         date: format(
-          parseISO(delivery.created_at),
+          parseISO(order.created_at),
           "'dia' dd 'de' MMMM', as' H:mm'h'",
           {
             locale: pt,
