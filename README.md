@@ -1,7 +1,7 @@
 <h1 align="center">
   <img alt="Fastfeet" title="Fastfeet" src="logo.png" width="300px" />
 </h1>
-
+<!-- 
 
 <h3 align="center">
   FastFeet, Trabalho Final Bootcamp GoStack
@@ -48,4 +48,4 @@ docker run --name redisfastfeet -p 6379:6379 -d -t redis:alpine
  docker start postgresfastfeet redisfastfeet
 ```
 3. Acesse o banco postgres com algum gerenciador como exemplo postbird, crie o banco com nome de <strong>fastfeet</strong>
-4. Crie um arquivo <b>.env</b> e coloque as configurações conforme arquivo <b>.env.example</b> alterando ip, usuário,password, banco... conforme definido na criação das imagens e também do banco.
+4. Crie um arquivo <b>.env</b> e coloque as configurações conforme arquivo <b>.env.example</b> alterando ip, usuário,password, banco... conforme definido na criação das imagens e também do banco. -->
