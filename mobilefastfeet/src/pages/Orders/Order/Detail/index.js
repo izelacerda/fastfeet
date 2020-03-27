@@ -39,7 +39,7 @@ export default function Detail({ route, navigation }) {
   }, [order]);
   const handleFinish = () => {
     if (order && !order.canceled_at) {
-      if (!order.start_date) {
+      if (startDate === '-- / -- / --') {
         Alert.alert(
           'Retirada de Entrega',
           'Você ainda não retirou a entrega, deseja retirar esta entrega?',
@@ -68,7 +68,7 @@ export default function Detail({ route, navigation }) {
             },
           ]
         );
-      } else if (!order.end_date) {
+      } else if (endDate === '-- / -- / --') {
         navigation.navigate('Finish', { order });
       } else {
         Alert.alert(
