@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { MdKeyboardArrowLeft, MdDone } from "react-icons/md";
 import { toast } from "react-toastify";
+import * as Yup from "yup";
+import PropTypes from "prop-types";
 
 import { Form, Input } from "@rocketseat/unform";
 import { Container, Content, Head } from "./styles";
@@ -8,8 +10,19 @@ import api from "~/services/api";
 import history from "~/services/history";
 import InputMask from "~/components/Input";
 
-export default function DestinatariosCadastro(props) {
-  const { id } = props.match.params;
+const schema = Yup.object().shape({
+  name: Yup.string().required("É obrigatório informar o nome"),
+  address: Yup.string().required("É obrigatório informar o endereço"),
+  number: Yup.number("É obrigatório informar o número válido").required(
+    "É obrigatório informar o número"
+  ),
+  state: Yup.string().required("É obrigatório informar o Estado "),
+  city: Yup.string().required("É obrigatório informar a cidade"),
+  zipcode: Yup.string().required("É obrigatório informar o CEP")
+});
+
+export default function DestinatariosCadastro({ match }) {
+  const { id } = match.params;
   const [dados, setDados] = useState([]);
   useEffect(() => {
     async function loadDados() {
@@ -26,31 +39,64 @@ export default function DestinatariosCadastro(props) {
   }, [id]);
 
   async function handleSubmit(data) {
-    if (id === "0") {
-      try {
-        await api.post("/recipients", data);
-        history.push({
-          pathname: `/recipients`
-        });
-        toast.success("Destinatário incluído com sucesso!");
-      } catch (error) {
-        toast.error("Erro ao incluir destinatário!");
+    try {
+      await schema.validate(
+        {
+          name: data.name,
+          address: data.address,
+          number: data.number,
+          state: data.state,
+          city: data.city,
+          zipcode: data.zipcode
+        },
+        {
+          abortEarly: false
+        }
+      );
+      if (id === "0") {
+        try {
+          await api.post("/recipients", data);
+          history.push({
+            pathname: `/recipients`
+          });
+          toast.success("Destinatário incluído com sucesso!");
+        } catch (error) {
+          toast.error("Erro ao incluir destinatário!");
+        }
+      } else {
+        try {
+          await api.put(`recipients/${id}`, data);
+          history.push({
+            pathname: `/recipients`
+          });
+          toast.success("Destinatário atualizado com sucesso!");
+        } catch (error) {
+          toast.error("Erro ao atualizar destinatário!");
+        }
       }
-    } else {
-      try {
-        await api.put(`recipients/${id}`, data);
-        history.push({
-          pathname: `/recipients`
+    } catch (error) {
+      let validErrors = "";
+      if (error instanceof Yup.ValidationError) {
+        error.inner.forEach(err => {
+          validErrors = `${validErrors} ${err.message}`;
         });
-        toast.success("Destinatário atualizado com sucesso!");
-      } catch (error) {
-        toast.error("Erro ao atualizar destinatário!");
+        if (validErrors.length > 0) {
+          toast.error(
+            `Não foi possível ${
+              id === "0" ? "incluir" : "alterar"
+            } a entrega. ${validErrors}`
+          );
+        }
+      } else {
+        toast.error(
+          `Não foi possível ${id === "0" ? "incluir" : "alterar"} a entrega.`
+        );
       }
     }
   }
   return (
     <Container>
-      <Form initialData={dados} onSubmit={handleSubmit}>
+      <Form initialData={dados} onSubmit={handleSubmit} schema={schema}>
         <Head>
           <div className="esquerda">
             <strong>
@@ -109,3 +155,18 @@ export default function DestinatariosCadastro(props) {
     </Container>
   );
 }
+DestinatariosCadastro.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string
+    })
+  })
+};
+
+DestinatariosCadastro.defaultProps = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: null
+    })
+  })
+};

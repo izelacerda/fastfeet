@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { MdKeyboardArrowLeft, MdDone } from "react-icons/md";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import { ValidationError } from "yup";
 import PropTypes from "prop-types";
 
 import { Form, Input } from "@rocketseat/unform";
@@ -79,7 +78,7 @@ export default function EncomendasCadastro({ match }) {
       }
     } catch (error) {
       let validErrors = "";
-      if (error instanceof ValidationError) {
+      if (error instanceof Yup.ValidationError) {
         error.inner.forEach(err => {
           validErrors = `${validErrors} ${err.message}`;
         });

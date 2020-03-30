@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { MdKeyboardArrowLeft, MdDone } from "react-icons/md";
 import { toast } from "react-toastify";
+import * as Yup from "yup";
+import PropTypes from "prop-types";
 
 import { Form, Input } from "@rocketseat/unform";
 import { Container, Content, Head } from "./styles";
@@ -8,8 +10,15 @@ import api from "~/services/api";
 import history from "~/services/history";
 import AvatarInput from "./AvatarInput";
 
-export default function EntregadoresCadastro(props) {
-  const { id } = props.match.params;
+const schema = Yup.object().shape({
+  email: Yup.string()
+    .email("Insira um e-mail válido")
+    .required("O e-mail é obrigatório"),
+  name: Yup.string().required("O nome é obrigatório")
+});
+
+export default function EntregadoresCadastro({ match }) {
+  const { id } = match.params;
   const [dados, setDados] = useState([]);
   const edicao = id > 0;
   useEffect(() => {
@@ -27,33 +36,62 @@ export default function EntregadoresCadastro(props) {
   }, [id]);
 
   async function handleSubmit(data) {
-    if (!edicao) {
-      try {
-        const response = await api.get("deliveryman", {
-          params: { email: data.email }
-        });
+    try {
+      await schema.validate(
+        {
+          name: data.name,
+          email: data.email
+        },
+        {
+          abortEarly: false
+        }
+      );
+      if (!edicao) {
+        try {
+          const response = await api.get("deliveryman", {
+            params: { email: data.email }
+          });
 
-        if (response.data && response.data.length > 0) {
-          toast.error("email ja utilizado em outro entregador!");
-        } else {
-          await api.post("/deliveryman", data);
+          if (response.data && response.data.length > 0) {
+            toast.error("email ja utilizado em outro entregador!");
+          } else {
+            await api.post("/deliveryman", data);
+            history.push({
+              pathname: `/deliveryman`
+            });
+            toast.success("Entregador incluído com sucesso!");
+          }
+        } catch (error) {
+          toast.error("Erro ao incluir entregador!");
+        }
+      } else {
+        try {
+          await api.put(`deliveryman/${id}`, data);
           history.push({
             pathname: `/deliveryman`
           });
-          toast.success("Entregador incluído com sucesso!");
+          toast.success("Entregador atualizado com sucesso!");
+        } catch (error) {
+          toast.error("Erro ao atualizar entregador!");
         }
-      } catch (error) {
-        toast.error("Erro ao incluir entregador!");
       }
-    } else {
-      try {
-        await api.put(`deliveryman/${id}`, data);
-        history.push({
-          pathname: `/deliveryman`
+    } catch (error) {
+      let validErrors = "";
+      if (error instanceof Yup.ValidationError) {
+        error.inner.forEach(err => {
+          validErrors = `${validErrors} ${err.message}`;
         });
-        toast.success("Entregador atualizado com sucesso!");
-      } catch (error) {
-        toast.error("Erro ao atualizar entregador!");
+        if (validErrors.length > 0) {
+          toast.error(
+            `Não foi possível ${
+              id === "0" ? "incluir" : "alterar"
+            } a entrega. ${validErrors}`
+          );
+        }
+      } else {
+        toast.error(
+          `Não foi possível ${id === "0" ? "incluir" : "alterar"} a entrega.`
+        );
       }
     }
   }
@@ -97,3 +135,19 @@ export default function EntregadoresCadastro(props) {
     </Container>
   );
 }
+
+EntregadoresCadastro.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string
+    })
+  })
+};
+
+EntregadoresCadastro.defaultProps = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: null
+    })
+  })
+};
