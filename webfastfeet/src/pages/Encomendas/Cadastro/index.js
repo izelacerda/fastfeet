@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { MdKeyboardArrowLeft, MdDone } from "react-icons/md";
 import { toast } from "react-toastify";
-// import Select from "react-select/async";
+import * as Yup from "yup";
+import { ValidationError } from "yup";
+import PropTypes from "prop-types";
 
 import { Form, Input } from "@rocketseat/unform";
 import { Container, Content, Head } from "./styles";
@@ -9,8 +11,16 @@ import api from "~/services/api";
 import history from "~/services/history";
 import AsyncSelectInput from "./AsyncSelectInput";
 
-export default function EncomendasCadastro(props) {
-  const { id } = props.match.params;
+const schema = Yup.object().shape({
+  recipient_id: Yup.number().required("O destinatário é obrigatório"),
+  deliveryman_id: Yup.number().required("O entregador é obrigatório"),
+  product: Yup.string()
+    .min(6, "Insira o nome do produto (min: 6 caracteres)")
+    .required("Produto é obrigatório")
+});
+
+export default function EncomendasCadastro({ match }) {
+  const { id } = match.params;
   const [dados, setDados] = useState([]);
 
   useEffect(() => {
@@ -30,30 +40,60 @@ export default function EncomendasCadastro(props) {
   }, [id]);
 
   async function handleSubmit(data) {
-    const dados = {
-      recipient_id: data.recipient.id,
-      deliveryman_id: data.deliveryman.id,
-      product: data.product
-    };
-    if (id === "0") {
-      try {
-        await api.post("/order", dados);
-        history.push({
-          pathname: `/orders`
-        });
-        toast.success("Encomenda incluída com sucesso!");
-      } catch (error) {
-        toast.error("Erro ao incluir encomenda!");
+    try {
+      const encomenda = {
+        recipient_id: data.recipient.id,
+        deliveryman_id: data.deliveryman.id,
+        product: data.product
+      };
+      await schema.validate(
+        {
+          recipient_id: data.recipient.id,
+          deliveryman_id: data.deliveryman.id,
+          product: data.product
+        },
+        {
+          abortEarly: false
+        }
+      );
+      if (id === "0") {
+        try {
+          await api.post("/order", encomenda);
+          history.push({
+            pathname: `/orders`
+          });
+          toast.success("Encomenda incluída com sucesso!");
+        } catch (error) {
+          toast.error("Erro ao incluir encomenda!");
+        }
+      } else {
+        try {
+          await api.put(`order/${id}`, encomenda);
+          history.push({
+            pathname: `/orders`
+          });
+          toast.success("Encomenda atualizada com sucesso!");
+        } catch (error) {
+          toast.error("Erro ao atualizar encomenda!");
+        }
       }
-    } else {
-      try {
-        await api.put(`order/${id}`, dados);
-        history.push({
-          pathname: `/orders`
+    } catch (error) {
+      let validErrors = "";
+      if (error instanceof ValidationError) {
+        error.inner.forEach(err => {
+          validErrors = `${validErrors} ${err.message}`;
         });
-        toast.success("Encomenda atualizada com sucesso!");
-      } catch (error) {
-        toast.error("Erro ao atualizar encomenda!");
+        if (validErrors.length > 0) {
+          toast.error(
+            `Não foi possível ${
+              id === "0" ? "incluir" : "alterar"
+            } a entrega. ${validErrors}`
+          );
+        }
+      } else {
+        toast.error(
+          `Não foi possível ${id === "0" ? "incluir" : "alterar"} a entrega.`
+        );
       }
     }
   }
@@ -104,3 +144,19 @@ export default function EncomendasCadastro(props) {
     </Container>
   );
 }
+
+EncomendasCadastro.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string
+    })
+  })
+};
+
+EncomendasCadastro.defaultProps = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: null
+    })
+  })
+};

@@ -111,6 +111,5 @@ export default function AsyncSelectInput({ label, name, entity, ...rest }) {
 AsyncSelectInput.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  entity: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string.isRequired
+  entity: PropTypes.string.isRequired
 };

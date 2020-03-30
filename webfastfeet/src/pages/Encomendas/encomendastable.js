@@ -7,6 +7,7 @@ import pt from "date-fns/locale/pt";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { toast } from "react-toastify";
+
 import { dicalogin } from "~/utils/geral";
 
 import Table from "~/components/Table/table";
@@ -45,8 +46,11 @@ async function handleDelete(objeto) {
 }
 
 function formatData(data) {
-  const dataFormatada = format(parseISO(data), "dd/MM/yyyy", { locale: pt });
-  return dataFormatada;
+  if (data) {
+    const dataFormatada = format(parseISO(data), "dd/MM/yyyy", { locale: pt });
+    return dataFormatada;
+  }
+  return null;
 }
 
 export default function EncomendasTable({ dados }) {
