@@ -6,6 +6,7 @@ import { Form, Input } from "@rocketseat/unform";
 import { Container, Content, Head } from "./styles";
 import api from "~/services/api";
 import history from "~/services/history";
+import InputMask from "~/components/Input";
 
 export default function DestinatariosCadastro(props) {
   const { id } = props.match.params;
@@ -94,7 +95,13 @@ export default function DestinatariosCadastro(props) {
               <Input name="state" label="Estado" />
             </div>
             <div className="campo4">
-              <Input name="zipcode" label="ZIP" />
+              <InputMask
+                label="CEP"
+                name="zipcode"
+                type="text"
+                placeholder="00000-000"
+                mask="99999-999"
+              />
             </div>
           </div>
         </Content>
