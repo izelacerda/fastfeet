@@ -1,7 +1,7 @@
 import React from "react";
 import printf from "printf";
 import { MdCreate, MdDeleteForever } from "react-icons/md";
-import { confirmAlert } from "react-confirm-alert";
+// import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { toast } from "react-toastify";
 
