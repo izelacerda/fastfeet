@@ -9,7 +9,7 @@
 
 <h3 align="start"><strong>1) Instalação BackEnd/FrontEnd/Mobile FastFeet</strong></h3>
 
-<h4> Apos fazer o Download da aplicação FastFeet você terá 3 pastas:</h4>
+<h4> Após fazer o Download da aplicação FastFeet você terá 3 pastas:</h4>
 <ul>
   <li>backfastfeet->   Projeto do BackEnd</li>
   <li>webfastfeet->    Projeto do FrontEnd Web</li>
