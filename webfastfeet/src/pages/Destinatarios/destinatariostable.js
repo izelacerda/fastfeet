@@ -11,14 +11,16 @@ import history from "~/services/history";
 import api from "~/services/api";
 
 async function handleDelete(objeto) {
-  try {
-    await api.delete(`/recipients/${objeto.id}`);
-    history.push({
-      pathname: `/recipients`
-    });
-    toast.success("Destinatário excluido!");
-  } catch (error) {
-    toast.error("Erro ao excluir o Destinatário!");
+  if (window.confirm("Confirma exclusão do destinatario?")) {
+    try {
+      await api.delete(`/recipients/${objeto.id}`);
+      history.push({
+        pathname: `/recipients`
+      });
+      toast.success("Destinatário excluido!");
+    } catch (error) {
+      toast.error("Erro ao excluir o Destinatário!");
+    }
   }
 }
 
@@ -51,21 +53,7 @@ export default function DestinatarilosTable({ dados }) {
           className="labelbutton"
           onClick={() => {
             handleVisible();
-            confirmAlert({
-              title: "Excluir",
-              message: "Confirma exclusão do destinatario",
-              buttons: [
-                {
-                  label: "Sim",
-                  onClick: () => {
-                    handleDelete(objeto);
-                  }
-                },
-                {
-                  label: "Não"
-                }
-              ]
-            });
+            handleDelete(objeto);
           }}
         >
           <MdDeleteForever
