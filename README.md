@@ -4,67 +4,67 @@
 
 
 <h2 align="center">
-  FastFeet, Trabalho Final Bootcamp GoStack 
+  FastFeet, GoStack Bootcamp Final Project
 </h2>
 
-<h3 align="start"><strong>1) Instalação BackEnd/FrontEnd/Mobile FastFeet</strong></h3>
+<h3 align="start"><strong>1) BackEnd/FrontEnd/Mobile FastFeet Installation</strong></h3>
 
-<h4> Após fazer o Download da aplicação FastFeet você terá 3 pastas:</h4>
+<h4> After downloading the FastFeet application you will have 3 folders:</h4>
 <ul>
-  <li>backfastfeet->   Projeto do BackEnd</li>
-  <li>webfastfeet->    Projeto do FrontEnd Web</li>
-  <li>mobilefastfeet-> Projeto Mobile</li>
+<li>backfastfeet-> BackEnd Project</li>
+<li>webfastfeet-> FrontEnd Web Project</li>
+<li>mobilefastfeet-> Mobile Project</li>
 </ul>
 
-<h4 align="start"><strong>1.1) Instalação de Containers Docker</strong></h4>
+<h4 align="start"><strong>1.1) Installing Docker Containers</strong></h4>
 
 <ul>
-  <li>Você deve fazer a instalação do docker conforme este  <a href="https://docs.docker.com/">link</a></li>
-  <li>Deverá instalar a imagem do Banco de Dados PostGreSql</li>
-  <p>
-  docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres:11
-   </p>
-  <li>Deverá instalar a imagem do Banco Redis</li>
-  <p>
-  docker run --name redis -p 6379:6379  -d -t redis:alpine
-  </p>
-   <li>Após a instalação poderá verificar as imagens postgresql/Redis instalados através do comando:</li>
-  <p>
-  docker ps -a
-  </p>
-   <li>Deve agora iniciar os containers através do comando que segue abaixo: </li>
-  <p>docker start database redis</p>
+<li>You must install Docker according to this <a href="https://docs.docker.com/">link</a></li>
+<li>You must install the PostGreSql Database image</li>
+<p>
+docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres:11
+</p>
+<li>You must install the Redis Database image</li>
+<p>
+docker run --name redis -p 6379:6379 -d -t redis:alpine
+</p>
+<li>After the installation, you can check the installed PostgreSQL/Redis images using the command:</li>
+<p>
+docker ps -a
+</p>
+<li>You must now start the containers using the command below: </li>
+<p>docker start database redis</p>
 </ul>
-<h4 align="start"><strong>1.2) Passos para instalação do BackEnd</strong></h4>
+<h4 align="start"><strong>1.2) Steps to install the BackEnd</strong></h4>
 
 <ul>
-  <li>Acesse pelo terminal a pasta <b>backfastfeet</b> na sua estação</li>
-  <li>Execute o comando para Instalação das dependencias do projeto:  <b>yarn install</b>.</li>
-  <p>Observação: Você deve ter o yarn instalado em sua estação como pré-requisito, caso contrário poderá utilizar o npm.<p>
-  <li>Você deve incluir um banco de dados no ambiente do postgresql. utilizei o aplicativo postbird para esta tarefa conforme o <a href="https://www.electronjs.org/apps/postbird">link.</a></li>
-  <p>Coloquei o nome do banco 'fastfeet', porem você pode colocar o nome que desejar.</p>
-  <li>No projeto do backend você deve incluir o arquivo .env para setar nome da base de dados e outras configuracoes. Existe um arquivo exemplo <b>.env.example</b>, você deve copiar este arquivo com o nome .env e configurar com os dados corretos.</li>
-  </p>
-  <li>Deve-se então executar as migrations para inclusão das tabelas na base de dados. No diretorio do backend executar no terminal o comando: <b>yarn sequelize db:migrate</b>.</li>
-  <li>Execute agora o comando para incluir automaticamente o usuário administador na tela de usuários. <b>yarn sequelize db:seed:all</b>.</li>
-  <li>Agora deve-se iniciar 2 serviços, o primero serviço do backend, através do comando <b>yarn dev</b> e em uma nova sessão do terminal o comand <b>yarn queue</b>, ou seja, teremos 2 terminais um executando o backend e outro o serviço de filas.</li>
-  <p>Pronto ja estamos com o backend rodando para servir nossas aplicações frontend e mobile</b>.</p>
+<li>Access the <b>backfastfeet</b> folder on your workstation via the terminal</li>
+<li>Run the command to install the project's dependencies: <b>yarn install</b>.</li>
+<p>Note: You must have yarn installed on your workstation as a prerequisite, otherwise you can use npm.<p>
+<li>You must include a database in the postgresql environment. I used the Postbird application for this task according to the <a href="https://www.electronjs.org/apps/postbird">link.</a></li>
+<p>I named the database 'fastfeet', but you can name it whatever you want.</p>
+<li>In the backend project, you must include the .env file to set the database name and other settings. There is an example file <b>.env.example</b>, you must copy this file with the name .env and configure it with the correct data.</li>
+</p>
+<li>You must then run the migrations to include the tables in the database. In the backend directory, run the command in the terminal: <b>yarn sequelize db:migrate</b>.</li>
+<li>Now run the command to automatically include the administrator user in the users screen. <b>yarn sequelize db:seed:all</b>.</li>
+<li>Now you need to start 2 services, the first backend service, using the <b>yarn dev</b> command and in a new terminal session the <b>yarn queue</b> command, that is, we will have 2 terminals, one running the backend and the other the queue service.</li>
+<p>Now we have the backend running to serve our frontend and mobile applications</b>.</p>
 </ul>
 
-<h4 align="start"><strong>1.3) Passos para instalação do FrontEnd</strong></h4>
+<h4 align="start"><strong>1.3) Steps to install the FrontEnd</strong></h4>
 <ul>
-  <li>Acesse em outro terminal a pasta <b>webfastfeet</b>.</li>
-  <li>Copie o arquivo de configurações .env da pasta backfastfeet para a pasta webfastfeet
-  </li>
-  <li>No sub-diretório \src\services\ existe o arquivo api.js onde você deve configurar o 'endereço/porta' que o backend esta rodando quando for ambiente de desenvolvimento, pois se for produção ele irá buscar as configurações do arquivo .env.</li>
-  <li>Execute o comando <b>'yarn start'</b> para iniciar a aplicação frontend.</li>
-  <li>A aplicação irá mostrar a tela de login e você deve informar o usuário: 'admin@fastfeet.com'<b></b> com a senha:'123456'<b></b> para acesso ao sistema.</li>
-  <p>Pronto ja estamos com o frontend rodando.</p>
+<li>Access the <b>webfastfeet</b> folder in another terminal.</li>
+<li>Copy the .env configuration file from the backfastfeet folder to the webfastfeet folder
+</li>
+<li>In the \src\services\ subdirectory there is the api.js file where you must configure the 'address/port' that the backend is running on when it is a development environment, because if it is production it will look for the settings from the .env file.</li>
+<li>Run the command <b>'yarn start'</b> to start the frontend application.</li>
+<li>The application will show the login screen and you must enter the user: 'admin@fastfeet.com'<b></b> with the password: '123456'<b></b> to access the system.</li>
+<p>Now we have the frontend running.</p>
 </ul>
-<h4 align="start"><strong>1.4) Passos para instalação do aplicativo mobile</strong></h4>
+<h4 align="start"><strong>1.4) Steps to install the mobile application</strong></h4>
 <ul>
-  <li>Acesse em outro terminal a pasta <b>mobilefastfeet</b>.</li>
-  <li>No sub-diretório \src\services\ existe o arquivo api.js onde você deve configurar o 'endereço/porta' que o backend esta rodando, assim a aplicação mobile poderá se comunicar o backend.</li>
-  <li>execute o comando <b>'react-native run-android'</b> para iniciar a aplicação no emulador do android ou execute o comando <b>'react-native run-ios'</b> para o emulador do ios.</li>
-  <p>Os emuladores android e ios devem ser previamente instalados.</p>
+<li>Access the <b>mobilefastfeet</b> folder in another terminal.</li>
+<li>In the \src\services\ subdirectory there is the api.js file where you must configure the 'address/port' that the backend is running on, so the mobile application can communicate with the backend.</li>
+<li>run the command <b>'react-native run-android'</b> to start the application in the Android emulator or run the command <b>'react-native run-ios'</b> for the iOS emulator.</li>
+<p>The Android and iOS emulators must be previously installed.</p>
 </ul>
